@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kontakt oss</title>
+</head>
+<body>
+    <h1>Kontakt oss</h1>
+    <form method="POST">
+        <label for="email">E-post:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="tittel">Tittel:</label><br>
+        <input type="text" id="tittel" name="tittel" required><br><br>
+
+        <label for="melding">Melding:</label><br>
+        <textarea id="melding" name="melding" rows="5" required></textarea><br><br>
+
+        <label for="tema">Tema:</label><br>
+        <select id="tema" name="tema" required>
+            <option value="Teknisk support">Teknisk support</option>
+            <option value="Salg">Salg</option>
+            <option value="Annen henvendelse">Annen henvendelse</option>
+        </select><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

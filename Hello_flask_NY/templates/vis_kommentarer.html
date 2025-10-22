@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Innsendte kontakter med kommentarer</title>
+</head>
+<body>
+    <h1>Innsendte kontakter</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p style="color:green;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if kontakter %}
+        {% for k in kontakter %}
+            <hr>
+            <p><strong>Tidspunkt:</strong> {{ k.tid }}</p>
+            <p><strong>E-post:</strong> {{ k.email }}</p>
+            <p><strong>Tittel:</strong> {{ k.tittel }}</p>
+            <p><strong>Tema:</strong> {{ k.tema }}</p>
+            <p><strong>Melding:</strong> {{ k.melding }}</p>
+            <p><strong>Status:</strong> {{ k.status }}</p>
+
+            <form method="POST">
+                <input type="hidden" name="melding_id" value="{{ k.id }}">
+                <select name="status">
+                    <option value="Åpen" {% if k.status=='Åpen' %}selected{% endif %}>Åpen</option>
+                    <option value="Behandles" {% if k.status=='Behandles' %}selected{% endif %}>Behandles</option>
+                    <option value="Avsluttet" {% if k.status=='Avsluttet' %}selected{% endif %}>Avsluttet</option>
+                </select>
+                <button type="submit">Oppdater status</button>
+            </form>
+
+            <h4>Kommentarer:</h4>
+            {% if k.kommentarer %}
+                <ul>
+                {% for kom in k.kommentarer %}
+                    <li><strong>{{ kom.tid }}:</strong> {{ kom.melding }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Ingen kommentarer enda.</p>
+            {% endif %}
+
+            <form method="POST">
+                <input type="hidden" name="kontakt_id" value="{{ k.id }}">
+                <textarea name="ny_kommentar" rows="2" cols="40" placeholder="Skriv ny kommentar..."></textarea>
+                <button type="submit">Legg til kommentar</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <p>Ingen kontakter sendt inn enda.</p>
+    {% endif %}
+
+    <p><a href="/">Tilbake til hovedside</a></p>
+</body>
+</html>

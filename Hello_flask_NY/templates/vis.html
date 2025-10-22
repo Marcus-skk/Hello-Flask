@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Innsendte kontakter</title>
+</head>
+<body>
+    <h1>Innsendte kontakter</h1>
+    {% if kontakter %}
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Tidspunkt</th>
+                <th>E-post</th>
+                <th>Tittel</th>
+                <th>Tema</th>
+                <th>Melding</th>
+            </tr>
+            {% for k in kontakter %}
+            <tr>
+                <td>{{ k.tid }}</td>
+                <td>{{ k.email }}</td>
+                <td>{{ k.tittel }}</td>
+                <td>{{ k.tema }}</td>
+                <td>{{ k.melding }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Ingen kontakter sendt inn enda.</p>
+    {% endif %}
+</body>
+</html>

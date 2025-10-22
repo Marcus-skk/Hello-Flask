@@ -1,7 +1,22 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SelectField
+from wtforms.fields import EmailField
+from wtforms.validators import DataRequired, Email
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "superhemmelig"
+
+class KontaktForm(FlaskForm):
+    email = EmailField("E-post", validators=[DataRequired(), Email()])
+    tittel = StringField("Tittel", validators=[DataRequired()])
+    melding = TextAreaField("Melding", validators=[DataRequired()])
+    tema = SelectField("Tema", choices=[
+        ("Teknisk support", "Teknisk support"),
+        ("Salg", "Salg"),
+        ("Annen henvendelse", "Annen henvendelse")
+    ], validators=[DataRequired()])
 
 @app.route("/")
 def home():
@@ -9,20 +24,22 @@ def home():
 
 @app.route("/kontakt", methods=["GET", "POST"])
 def kontakt():
-    if request.method == "POST":
-        email = request.form.get("email")
-        tittel = request.form.get("tittel")
-        melding = request.form.get("melding")
-        tema = request.form.get("tema")
+    form = KontaktForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        tittel = form.tittel.data
+        melding = form.melding.data
+        tema = form.tema.data
         tidspunkt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Lagre data i fil
+        # Lagre til fil
         with open("kontakter.txt", "a", encoding="utf-8") as f:
             f.write(f"{tidspunkt} | {email} | {tittel} | {tema} | {melding}\n")
 
-        return f"Takk for din henvendelse, {email}! Vi vil svare på {tema} snart."
+        flash(f"Takk for din henvendelse, {email}! Vi vil svare på {tema} snart.", "success")
+        return redirect(url_for("kontakt"))
 
-    return render_template("kontakt.html")
+    return render_template("kontakt_wtf.html", form=form)
 
 @app.route("/vis")
 def vis():

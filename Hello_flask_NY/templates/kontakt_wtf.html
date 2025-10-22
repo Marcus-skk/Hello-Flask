@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kontakt oss</title>
+</head>
+<body>
+    <h1>Kontakt oss</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p style="color:green;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <label>{{ form.email.label }}</label><br>
+        {{ form.email(size=40) }}<br><br>
+
+        <label>{{ form.tittel.label }}</label><br>
+        {{ form.tittel(size=40) }}<br><br>
+
+        <label>{{ form.melding.label }}</label><br>
+        {{ form.melding(rows=5, cols=40) }}<br><br>
+
+        <label>{{ form.tema.label }}</label><br>
+        {{ form.tema() }}<br><br>
+
+        <button type="submit">Send</button>
+    </form>
+
+    <p><a href="/">Tilbake til hovedside</a></p>
+</body>
+</html>

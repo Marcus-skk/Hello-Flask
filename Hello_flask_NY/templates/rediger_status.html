@@ -2,15 +2,14 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <title>Kontakt</title>
+    <title>Rediger status</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <header>
-    <h1>Send melding</h1>
+    <h1>Rediger status</h1>
     <nav>
-        <a href="{{ url_for('index') }}">Hjem</a>
-        <a href="{{ url_for('vis') }}">Se meldinger</a>
+        <a href="{{ url_for('vis') }}">Tilbake til meldinger</a>
     </nav>
 </header>
 <div class="container">
@@ -22,15 +21,8 @@
 
     <form method="POST">
         {{ form.hidden_tag() }}
-        <label for="navn">Navn:</label>
-        {{ form.navn() }}
-
-        <label for="epost">Epost:</label>
-        {{ form.epost() }}
-
-        <label for="melding">Melding:</label>
-        {{ form.melding() }}
-
+        <label for="status">Status:</label>
+        {{ form.status() }}
         {{ form.submit() }}
     </form>
 </div>

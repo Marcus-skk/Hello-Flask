@@ -1,37 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Kontakt oss</title>
+    <meta charset="UTF-8">
+    <title>Kontakt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Kontakt oss</h1>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p style="color:green;">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <form method="POST">
+    <nav>
+        <a href="{{ url_for('index') }}">Hjem</a>
+        <a href="{{ url_for('vis') }}">Se meldinger</a>
+    </nav>
+    <hr>
+    <form method="POST" action="{{ url_for('kontakt') }}">
         {{ form.hidden_tag() }}
+        <label for="navn">Navn:</label>
+        {{ form.navn() }}
 
-        <label>{{ form.email.label }}</label><br>
-        {{ form.email(size=40) }}<br><br>
+        <label for="epost">E-post:</label>
+        {{ form.epost() }}
 
-        <label>{{ form.tittel.label }}</label><br>
-        {{ form.tittel(size=40) }}<br><br>
+        <label for="melding">Melding:</label>
+        {{ form.melding() }}
 
-        <label>{{ form.melding.label }}</label><br>
-        {{ form.melding(rows=5, cols=40) }}<br><br>
-
-        <label>{{ form.tema.label }}</label><br>
-        {{ form.tema() }}<br><br>
-
-        <button type="submit">Send</button>
+        <input type="submit" value="Send melding">
     </form>
-
-    <p><a href="/">Tilbake til hovedside</a></p>
 </body>
 </html>

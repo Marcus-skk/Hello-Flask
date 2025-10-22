@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Innsendte kontakter</title>
+    <meta charset="UTF-8">
+    <title>Se meldinger</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Innsendte kontakter</h1>
-    {% if kontakter %}
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>Tidspunkt</th>
-                <th>E-post</th>
-                <th>Tittel</th>
-                <th>Tema</th>
-                <th>Melding</th>
-            </tr>
-            {% for k in kontakter %}
-            <tr>
-                <td>{{ k.tid }}</td>
-                <td>{{ k.email }}</td>
-                <td>{{ k.tittel }}</td>
-                <td>{{ k.tema }}</td>
-                <td>{{ k.melding }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>Ingen kontakter sendt inn enda.</p>
-    {% endif %}
+<header>
+    <h1>Meldinger</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Hjem</a>
+        <a href="{{ url_for('kontakt') }}">Send melding</a>
+    </nav>
+</header>
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <table>
+        <tr>
+            <th>Navn</th>
+            <th>Epost</th>
+            <th>Melding</th>
+            <th>Tid</th>
+            <th>Status</th>
+            <th>Handlinger</th>
+        </tr>
+        {% for kontakt in kontakter %}
+        <tr>
+            <td>{{ kontakt.Navn }}</td>
+            <td>{{ kontakt.Epost }}</td>
+            <td>{{ kontakt.Melding }}</td>
+            <td>{{ kontakt.Tid }}</td>
+            <td>{{ kontakt.Status }}</td>
+            <td>
+                <a class="button" href="{{ url_for('kommentar', kontakt_id=kontakt.KontaktId) }}">Kommentarer</a>
+                <a class="button" href="{{ url_for('rediger_status', kontakt_id=kontakt.KontaktId) }}">Rediger status</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 </body>
 </html>

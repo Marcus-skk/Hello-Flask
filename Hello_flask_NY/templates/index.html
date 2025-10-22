@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Min Flask-app</title>
+    <meta charset="UTF-8">
+    <title>Hjem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Hei, verden! Flask fungerer!</h1>
-    <p><a href="/kontakt">Gå til kontaktskjema</a></p>
-    <p><a href="/vis">Se innsendte kontakter</a></p>
+<header>
+    <h1>Velkommen til kontaktsystemet</h1>
+    <nav>
+        <a href="{{ url_for('kontakt') }}">Send melding</a>
+        <a href="{{ url_for('vis') }}">Se meldinger</a>
+    </nav>
+</header>
+<div class="container">
+    <p>Dette er hovedsiden. Bruk menyen over for å sende eller se meldinger.</p>
+</div>
 </body>
 </html>

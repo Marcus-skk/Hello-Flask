@@ -1,56 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Innsendte kontakter med status</title>
+    <meta charset="UTF-8">
+    <title>Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Innsendte kontakter</h1>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p style="color:green;">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    {% if kontakter %}
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>Tidspunkt</th>
-                <th>E-post</th>
-                <th>Tittel</th>
-                <th>Tema</th>
-                <th>Melding</th>
-                <th>Status</th>
-                <th>Endre status</th>
-            </tr>
-            {% for k in kontakter %}
-            <tr>
-                <td>{{ k.tid }}</td>
-                <td>{{ k.email }}</td>
-                <td>{{ k.tittel }}</td>
-                <td>{{ k.tema }}</td>
-                <td>{{ k.melding }}</td>
-                <td>{{ k.status }}</td>
-                <td>
-                    <form method="POST">
-                        <input type="hidden" name="melding_id" value="{{ k.id }}">
-                        <select name="status">
-                            <option value="Åpen" {% if k.status=='Åpen' %}selected{% endif %}>Åpen</option>
-                            <option value="Behandles" {% if k.status=='Behandles' %}selected{% endif %}>Behandles</option>
-                            <option value="Avsluttet" {% if k.status=='Avsluttet' %}selected{% endif %}>Avsluttet</option>
-                        </select>
-                        <button type="submit">Oppdater</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+    <h1>Statusmelding</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Hjem</a>
+        <a href="{{ url_for('kontakt') }}">Send melding</a>
+        <a href="{{ url_for('vis') }}">Se meldinger</a>
+    </nav>
+    <hr>
+    {% if status %}
+        <p>{{ status }}</p>
     {% else %}
-        <p>Ingen kontakter sendt inn enda.</p>
+        <p>Ingen status å vise.</p>
     {% endif %}
-
-    <p><a href="/">Tilbake til hovedside</a></p>
 </body>
 </html>

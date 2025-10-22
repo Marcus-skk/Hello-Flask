@@ -1,60 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <title>Innsendte kontakter med kommentarer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kommentarer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Innsendte kontakter</h1>
+    <div class="container">
+        <h1>Tidligere kommentarer</h1>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p style="color:green;">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
 
-    {% if kontakter %}
-        {% for k in kontakter %}
-            <hr>
-            <p><strong>Tidspunkt:</strong> {{ k.tid }}</p>
-            <p><strong>E-post:</strong> {{ k.email }}</p>
-            <p><strong>Tittel:</strong> {{ k.tittel }}</p>
-            <p><strong>Tema:</strong> {{ k.tema }}</p>
-            <p><strong>Melding:</strong> {{ k.melding }}</p>
-            <p><strong>Status:</strong> {{ k.status }}</p>
-
-            <form method="POST">
-                <input type="hidden" name="melding_id" value="{{ k.id }}">
-                <select name="status">
-                    <option value="Åpen" {% if k.status=='Åpen' %}selected{% endif %}>Åpen</option>
-                    <option value="Behandles" {% if k.status=='Behandles' %}selected{% endif %}>Behandles</option>
-                    <option value="Avsluttet" {% if k.status=='Avsluttet' %}selected{% endif %}>Avsluttet</option>
-                </select>
-                <button type="submit">Oppdater status</button>
-            </form>
-
-            <h4>Kommentarer:</h4>
-            {% if k.kommentarer %}
-                <ul>
-                {% for kom in k.kommentarer %}
-                    <li><strong>{{ kom.tid }}:</strong> {{ kom.melding }}</li>
-                {% endfor %}
-                </ul>
+        <ul class="kommentarer-liste">
+            {% for kommentar in kommentarer %}
+                <li class="kommentar-item">
+                    <span class="tid">{{ kommentar.Tidspunkt.strftime('%d.%m.%Y %H:%M:%S') }}</span>: 
+                    <span class="melding">{{ kommentar.Melding }}</span>
+                </li>
             {% else %}
-                <p>Ingen kommentarer enda.</p>
-            {% endif %}
+                <li>Ingen kommentarer enda.</li>
+            {% endfor %}
+        </ul>
 
-            <form method="POST">
-                <input type="hidden" name="kontakt_id" value="{{ k.id }}">
-                <textarea name="ny_kommentar" rows="2" cols="40" placeholder="Skriv ny kommentar..."></textarea>
-                <button type="submit">Legg til kommentar</button>
-            </form>
-        {% endfor %}
-    {% else %}
-        <p>Ingen kontakter sendt inn enda.</p>
-    {% endif %}
+        <h2>Legg til ny kommentar</h2>
+        <form method="POST" class="kommentar-form">
+            <textarea name="kommentar" placeholder="Skriv en kommentar..." required></textarea><br>
+            <button type="submit">Legg til kommentar</button>
+        </form>
 
-    <p><a href="/">Tilbake til hovedside</a></p>
+        <p><a class="tilbake-link" href="{{ url_for('vis') }}">Tilbake til meldinger</a></p>
+    </div>
 </body>
 </html>
